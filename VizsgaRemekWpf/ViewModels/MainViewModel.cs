@@ -1,5 +1,3 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -26,7 +24,7 @@ namespace VizsgaRemekWpf.ViewModels
         private bool _isRefreshing;
         public bool IsRefreshing { get => _isRefreshing; set => Set(ref _isRefreshing, value); }
 
-        // ── Tabs — ugyanaz a minta mint a feltöltött MainViewModel ──
+    
         public ObservableCollection<object> Tabs { get; }
 
         private object? _selectedTab;

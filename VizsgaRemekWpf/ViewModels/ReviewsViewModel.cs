@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VizsgaRemekWpf.ViewModels
 {
-    internal class RestaurantsUserControl
+    public class ReviewsViewModel
     {
     }
 }

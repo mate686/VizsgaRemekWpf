@@ -6,7 +6,166 @@
              xmlns:local="clr-namespace:VizsgaRemekWpf.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
+        <Style x:Key="InputBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#1A1A24"/>
+            <Setter Property="Foreground" Value="#F0EDE8"/>
+            <Setter Property="BorderBrush" Value="#2A2A3A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CaretBrush" Value="#FF6B35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF6B35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PassBox" TargetType="PasswordBox">
+            <Setter Property="Background" Value="#1A1A24"/>
+            <Setter Property="Foreground" Value="#F0EDE8"/>
+            <Setter Property="BorderBrush" Value="#2A2A3A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="CaretBrush" Value="#FF6B35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="8"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#FF6B35"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#0F0F14" Offset="0"/>
+                <GradientStop Color="#1A0F1F" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+ 
+        <Ellipse Width="400" Height="400" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                 Margin="-120,0,0,80" Opacity="0.04">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF6B35" Offset="0"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+        <Ellipse Width="300" Height="300" HorizontalAlignment="Right" VerticalAlignment="Top"
+                 Margin="0,40,40,0" Opacity="0.05">
+            <Ellipse.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFB627" Offset="0"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                </RadialGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="380">
             
+            <StackPanel HorizontalAlignment="Center" Margin="0,0,0,40">
+                <Border Width="64" Height="64" CornerRadius="16"
+                        HorizontalAlignment="Center" Margin="0,0,0,14">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FF6B35" Offset="0"/>
+                            <GradientStop Color="#FFB627" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <TextBlock Text="🍽" FontSize="28"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="VizsgaRemek" FontSize="26" FontWeight="Bold"
+                           Foreground="#F0EDE8" HorizontalAlignment="Center"/>
+                <TextBlock Text="Admin Panel" FontSize="13" Foreground="#6B6B80"
+                           HorizontalAlignment="Center" Margin="0,4,0,0"/>
+            </StackPanel>
+
+           
+            <Border Background="#1A1A24" CornerRadius="16" Padding="32"
+                    BorderBrush="#2A2A3A" BorderThickness="1">
+                <StackPanel>
+                    <TextBlock Text="Bejelentkezés" FontSize="20" FontWeight="SemiBold"
+                               Foreground="#F0EDE8" Margin="0,0,0,24"/>
+
+                    <TextBlock Text="Felhasználónév" FontSize="12" Foreground="#6B6B80"
+                               Margin="0,0,0,6" FontWeight="Medium"/>
+                    <TextBox Style="{StaticResource InputBox}"
+                             Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                             Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Jelszó" FontSize="12" Foreground="#6B6B80"
+                               Margin="0,0,0,6" FontWeight="Medium"/>
+                    
+                    
+                    <PasswordBox x:Name="PwBox" Style="{StaticResource PassBox}"
+                                 PasswordChanged="PwBox_PasswordChanged"
+                                 Margin="0,0,0,12"/>
+
+                  
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF5555"
+                               FontSize="12" Margin="0,0,0,20" TextWrapping="Wrap"/>
+
+                    <!-- Gomb -->
+                    <Button Command="{Binding LoginCommand}" Cursor="Hand">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="bg" CornerRadius="8" Padding="0,13">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Color="#FF6B35" Offset="0"/>
+                                            <GradientStop Color="#FFB627" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <TextBlock Text="Bejelentkezés" Foreground="White"
+                                               FontWeight="SemiBold" FontSize="14"
+                                               HorizontalAlignment="Center"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="bg" Property="Opacity" Value="0.85"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <TextBlock Text="⏳ Bejelentkezés folyamatban..."
+                               Foreground="#6B6B80" FontSize="12"
+                               HorizontalAlignment="Center" Margin="0,12,0,0"
+                               Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
     </Grid>
 </UserControl>
+

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VizsgaRemekWpf.ViewModels
 {
-    public class OverviewViewModel
+    public class OrdersViewModel
     {
     }
 }

@@ -14,7 +14,7 @@
         <conv:IsSelectedTabConverter x:Key="IsSelectedTab"/>
 
 
-        <DataTemplate DataType="{x:Type vm:OverviewViewModel}">
+        <DataTemplate DataType="{x:Type vm:OrdersViewModel}">
             <views:OverviewUserControl/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:RestaurantsViewModel}">
