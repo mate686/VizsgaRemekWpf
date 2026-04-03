@@ -34,9 +34,9 @@ namespace VizsgaRemekWpf.Services
 
         public async Task<LoginResult?> LoginAsync(string username, string password)
         {
-            var payload = new { username, password };
             var content = new StringContent(
-                JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+                JsonSerializer.Serialize(new { username, password }),
+                Encoding.UTF8, "application/json");
 
             var response = await _http.PostAsync($"{BaseUrl}/auth/login", content);
             if (!response.IsSuccessStatusCode) return null;
@@ -50,8 +50,7 @@ namespace VizsgaRemekWpf.Services
             var role = jwt.Claims
                 .FirstOrDefault(c =>
                     c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role" ||
-                    c.Type == "role")
-                ?.Value ?? "";
+                    c.Type == "role")?.Value ?? "";
 
             return new LoginResult
             {
