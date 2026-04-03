@@ -13,8 +13,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <conv:IsSelectedTabConverter x:Key="IsSelectedTab"/>
 
-
-        <DataTemplate DataType="{x:Type vm:OrdersViewModel}">
+       
+        <DataTemplate DataType="{x:Type vm:OverviewViewModel}">
             <views:OverviewUserControl/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:RestaurantsViewModel}">
@@ -61,21 +61,21 @@
     </Window.Resources>
 
     <Grid>
-
+  
         <views:LoginUserControl
             DataContext="{Binding LoginVM}"
             Visibility="{Binding IsLoggedIn,
                 Converter={StaticResource BoolToVis},
                 ConverterParameter=Inverse}"/>
 
-
+      
         <Grid Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVis}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-
+         
             <Border Grid.Column="0" Background="#13131C"
                     BorderBrush="#2A2A3A" BorderThickness="0,0,1,0">
                 <DockPanel>
@@ -221,6 +221,7 @@
                 </DockPanel>
             </Border>
 
+         
             <Grid Grid.Column="1">
                 <Border VerticalAlignment="Top" Height="60" Background="#13131C"
                         BorderBrush="#2A2A3A" BorderThickness="0,0,0,1" Panel.ZIndex="10">

@@ -14,14 +14,13 @@ namespace VizsgaRemekWpf
 
         public App()
         {
-            // DI konténer összerakása — ugyanaz a minta mint a feltöltött ViewModelFactory-ban
+            
             var services = new ServiceCollection();
 
-            // Services
+         
             services.AddSingleton<ApiService>();
             services.AddSingleton<IViewModelFactory, ViewModelFactory>();
 
-            // ViewModels — ugyanúgy regisztrálva mint a feltöltött kódban
             services.AddSingleton<LoginViewModel>();
             services.AddSingleton<MainViewModel>();
             services.AddTransient<OverviewViewModel>();
@@ -30,7 +29,7 @@ namespace VizsgaRemekWpf
             services.AddTransient<UsersViewModel>();
             services.AddTransient<ReviewsViewModel>();
 
-            // View — konstruktor injektálással kapja a MainViewModel-t
+ 
             services.AddSingleton<MainView>();
 
             _serviceProvider = services.BuildServiceProvider();
@@ -40,7 +39,7 @@ namespace VizsgaRemekWpf
         {
             base.OnStartup(e);
 
-            // MainView megnyitása — DataContext a konstruktorban van beállítva
+     
             var mainView = _serviceProvider.GetRequiredService<MainView>();
             mainView.Show();
         }
