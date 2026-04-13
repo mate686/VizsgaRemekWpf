@@ -5,8 +5,101 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VizsgaRemekWpf.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF">
+    
+    <UserControl.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="#1A1A24"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BorderBrush" Value="#2A2A3A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+
+           
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="🏪" FontSize="22" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding RestaurantCount}" FontSize="32"
+                                   FontWeight="Bold" Foreground="#FF6B35"/>
+                        <TextBlock Text="Éttermek" FontSize="12" Foreground="#6B6B80" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}" Margin="5,0">
+                    <StackPanel>
+                        <TextBlock Text="📦" FontSize="22" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding OrderCount}" FontSize="32"
+                                   FontWeight="Bold" Foreground="#FFB627"/>
+                        <TextBlock Text="Rendelések" FontSize="12" Foreground="#6B6B80" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}" Margin="5,0">
+                    <StackPanel>
+                        <TextBlock Text="👥" FontSize="22" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding UserCount}" FontSize="32"
+                                   FontWeight="Bold" Foreground="#4ECDC4"/>
+                        <TextBlock Text="Felhasználók" FontSize="12" Foreground="#6B6B80" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="3" Style="{StaticResource Card}" Margin="10,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="💰" FontSize="22" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding TotalRevenue}" FontSize="24"
+                                   FontWeight="Bold" Foreground="#A8FF78"/>
+                        <TextBlock Text="Bevétel" FontSize="12" Foreground="#6B6B80" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+           
+            <Grid Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Rendelések státusz szerint" FontSize="13"
+                                   FontWeight="SemiBold" Foreground="#F0EDE8" Margin="0,0,0,12"/>
+                        <lvc:PieChart Series="{Binding OrderStatusSeries}"
+                                      Height="210" LegendPosition="Right"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Top éttermek bevétel szerint" FontSize="13"
+                                   FontWeight="SemiBold" Foreground="#F0EDE8" Margin="0,0,0,12"/>
+                        <lvc:CartesianChart Series="{Binding RestaurantRevenueSeries}"
+                                            XAxes="{Binding RestaurantRevenueXAxes}"
+                                            YAxes="{Binding DefaultYAxes}" Height="210"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Ételek kategóriánként" FontSize="13"
+                               FontWeight="SemiBold" Foreground="#F0EDE8" Margin="0,0,0,12"/>
+                    <lvc:CartesianChart Series="{Binding FoodCategorySeries}"
+                                        XAxes="{Binding FoodCategoryXAxes}"
+                                        YAxes="{Binding DefaultYAxes}" Height="190"/>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

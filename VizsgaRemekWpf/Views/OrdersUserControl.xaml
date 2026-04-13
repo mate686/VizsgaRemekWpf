@@ -4,9 +4,102 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VizsgaRemekWpf.Views"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    
+    <UserControl.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="#1A1A24"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BorderBrush" Value="#2A2A3A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+        <Style x:Key="DgHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#13131C"/>
+            <Setter Property="Foreground" Value="#6B6B80"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,10"/>
+        </Style>
+        <Style x:Key="DgCell" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#F0EDE8"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Rendelések listája" FontSize="15" FontWeight="SemiBold"
+                               Foreground="#F0EDE8" Margin="0,0,0,14"/>
+                    <DataGrid ItemsSource="{Binding Orders}" AutoGenerateColumns="False"
+                              Background="Transparent" BorderThickness="0"
+                              RowBackground="#1A1A24" AlternatingRowBackground="#1F1F2C"
+                              Foreground="#F0EDE8" GridLinesVisibility="Horizontal"
+                              HorizontalGridLinesBrush="#2A2A3A" HeadersVisibility="Column"
+                              CanUserAddRows="False" IsReadOnly="True" MaxHeight="350"
+                              ColumnHeaderStyle="{StaticResource DgHeader}"
+                              CellStyle="{StaticResource DgCell}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PublicId}" Width="*"/>
+                            <DataGridTextColumn Header="FELHASZNÁLÓ" Binding="{Binding UserId}" Width="*"/>
+                            <DataGridTextColumn Header="ÖSSZEG" Binding="{Binding TotalPrice, StringFormat={}{0:N0} Ft}" Width="120"/>
+                            <DataGridTextColumn Header="STÁTUSZ" Binding="{Binding Status}" Width="110"/>
+                            <DataGridTextColumn Header="DÁTUM" Binding="{Binding OrderDate, StringFormat={}{0:yyyy.MM.dd}}" Width="110"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
+                    <StackPanel>
+                        <TextBlock Text="Státusz megoszlás" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="#F0EDE8" Margin="0,0,0,12"/>
+                        <lvc:PieChart Series="{Binding StatusSeries}"
+                                      Height="210" LegendPosition="Bottom"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0,0,0">
+                    <StackPanel Margin="0,8">
+                        <TextBlock Text="Bevétel összesítő" FontSize="13" FontWeight="SemiBold"
+                                   Foreground="#F0EDE8" Margin="0,0,0,20"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <TextBlock Text="💰" FontSize="20" Margin="0,0,12,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Összes bevétel" FontSize="12" Foreground="#6B6B80"/>
+                                <TextBlock Text="{Binding TotalRevenue}" FontSize="24"
+                                           FontWeight="Bold" Foreground="#A8FF78"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <TextBlock Text="✅" FontSize="20" Margin="0,0,12,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Fizetett rendelések" FontSize="12" Foreground="#6B6B80"/>
+                                <TextBlock Text="{Binding PaidOrders}" FontSize="24"
+                                           FontWeight="Bold" Foreground="#4ECDC4"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⏳" FontSize="20" Margin="0,0,12,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Függő rendelések" FontSize="12" Foreground="#6B6B80"/>
+                                <TextBlock Text="{Binding PendingOrders}" FontSize="24"
+                                           FontWeight="Bold" Foreground="#FFB627"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

@@ -135,7 +135,7 @@
                     <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF5555"
                                FontSize="12" Margin="0,0,0,20" TextWrapping="Wrap"/>
 
-                    <!-- Gomb -->
+                    
                     <Button Command="{Binding LoginCommand}" Cursor="Hand">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">

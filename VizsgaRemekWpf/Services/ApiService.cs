@@ -15,7 +15,7 @@ namespace VizsgaRemekWpf.Services
 {
     public class ApiService
     {
-        private const string BaseUrl = "http://localhost:5000/api";
+        private const string BaseUrl = "http://localhost:3000/api";
 
         private readonly HttpClient _http = new();
         private readonly JsonSerializerOptions _json = new()

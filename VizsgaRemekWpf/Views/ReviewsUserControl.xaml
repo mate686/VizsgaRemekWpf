@@ -4,9 +4,68 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VizsgaRemekWpf.Views"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <UserControl.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="#1A1A24"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="24"/>
+            <Setter Property="BorderBrush" Value="#2A2A3A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+        <Style x:Key="DgHeader" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#13131C"/>
+            <Setter Property="Foreground" Value="#6B6B80"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,10"/>
+        </Style>
+        <Style x:Key="DgCell" TargetType="DataGridCell">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#F0EDE8"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Értékelések" FontSize="15" FontWeight="SemiBold"
+                               Foreground="#F0EDE8" Margin="0,0,0,14"/>
+                    <DataGrid ItemsSource="{Binding Reviews}" AutoGenerateColumns="False"
+                              Background="Transparent" BorderThickness="0"
+                              RowBackground="#1A1A24" AlternatingRowBackground="#1F1F2C"
+                              Foreground="#F0EDE8" GridLinesVisibility="Horizontal"
+                              HorizontalGridLinesBrush="#2A2A3A" HeadersVisibility="Column"
+                              CanUserAddRows="False" IsReadOnly="True" MaxHeight="350"
+                              ColumnHeaderStyle="{StaticResource DgHeader}"
+                              CellStyle="{StaticResource DgCell}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ÉTTEREM" Binding="{Binding RestaurantName}" Width="*"/>
+                            <DataGridTextColumn Header="FELHASZNÁLÓ" Binding="{Binding UserName}" Width="*"/>
+                            <DataGridTextColumn Header="ÉRTÉKELÉS" Binding="{Binding Rating}" Width="100"/>
+                            <DataGridTextColumn Header="MEGJEGYZÉS" Binding="{Binding Comment}" Width="*"/>
+                            <DataGridTextColumn Header="DÁTUM"
+                                                Binding="{Binding CreatedAt, StringFormat={}{0:yyyy.MM.dd}}"
+                                                Width="110"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Értékelések megoszlása (1–5 csillag)" FontSize="13"
+                               FontWeight="SemiBold" Foreground="#F0EDE8" Margin="0,0,0,12"/>
+                    <lvc:CartesianChart Series="{Binding RatingDistributionSeries}"
+                                        XAxes="{Binding RatingXAxes}"
+                                        YAxes="{Binding DefaultYAxes}" Height="190"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

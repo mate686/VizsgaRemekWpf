@@ -26,6 +26,11 @@ namespace VizsgaRemekWpf.Views
             InitializeComponent();
         }
 
-       
+        private void PwBox_PasswordChanged(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel vm)
+                vm.Password = PwBox.Password;
+        }
+
     }
 }
