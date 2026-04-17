@@ -61,15 +61,31 @@
     </Window.Resources>
 
     <Grid>
-     
-        <views:LoginUserControl
-            DataContext="{Binding LoginVM}"
-            Visibility="{Binding IsLoggedIn,
-                Converter={StaticResource BoolToVis},
-                ConverterParameter=Inverse}"/>
 
-       
-        <Grid Visibility="{Binding IsLoggedIn, Converter={StaticResource BoolToVis}}">
+        <views:LoginUserControl DataContext="{Binding LoginVM}">
+            <views:LoginUserControl.Style>
+                <Style TargetType="views:LoginUserControl">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoggedIn}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </views:LoginUserControl.Style>
+        </views:LoginUserControl>
+
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoggedIn}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220"/>
                 <ColumnDefinition Width="*"/>

@@ -38,8 +38,17 @@ namespace VizsgaRemekWpf.ViewModels
             new Axis { LabelsPaint = new SolidColorPaint(SKColor.Parse("#6B6B80")) }
         };
 
-        public void Load(List<OrderModel> orders)
+        public void Load(List<OrderModel> orders, List<UserModel> users)
         {
+            foreach (var order in orders)
+            {
+                var user = users.FirstOrDefault(u => u.Id == order.UserId);
+
+                order.UserName = user?.Name;
+                if (string.IsNullOrWhiteSpace(order.UserName))
+                    order.UserName = user?.UserName ?? order.UserId;
+            }
+
             Orders = new ObservableCollection<OrderModel>(orders);
 
             var revenue = orders.Where(o => o.Status == "Paid").Sum(o => o.TotalPrice);
@@ -49,9 +58,9 @@ namespace VizsgaRemekWpf.ViewModels
 
             var colors = new[]
             {
-                SKColor.Parse("#FF6B35"), SKColor.Parse("#FFB627"),
-                SKColor.Parse("#4ECDC4"), SKColor.Parse("#A8FF78")
-            };
+        SKColor.Parse("#FF6B35"), SKColor.Parse("#FFB627"),
+        SKColor.Parse("#4ECDC4"), SKColor.Parse("#A8FF78")
+    };
 
             StatusSeries = orders.GroupBy(o => o.Status)
                 .Select((g, i) => new PieSeries<double>
@@ -62,7 +71,8 @@ namespace VizsgaRemekWpf.ViewModels
                     DataLabelsPaint = new SolidColorPaint(SKColors.White),
                     DataLabelsSize = 12,
                 })
-                .Cast<ISeries>().ToList();
+                .Cast<ISeries>()
+                .ToList();
         }
     }
 }

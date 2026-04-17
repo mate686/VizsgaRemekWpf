@@ -9,13 +9,14 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using System.Windows;
 using VizsgaRemekWpf.Models;
 
 namespace VizsgaRemekWpf.Services
 {
     public class ApiService
     {
-        private const string BaseUrl = "http://localhost:3000/api";
+        private const string BaseUrl = "https://localhost:4000/api";
 
         private readonly HttpClient _http = new();
         private readonly JsonSerializerOptions _json = new()
@@ -31,6 +32,22 @@ namespace VizsgaRemekWpf.Services
                     ? null
                     : new AuthenticationHeaderValue("Bearer", token);
         }
+
+        private async Task<T> GetAsync<T>(string url)
+        {
+            /*System.Windows.MessageBox.Show(
+                _http.DefaultRequestHeaders.Authorization?.ToString() ?? "NINCS AUTH HEADER");*/
+
+            var response = await _http.GetAsync(url);
+            var body = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"{url} -> {(int)response.StatusCode} {response.ReasonPhrase}\n{body}");
+
+            return JsonSerializer.Deserialize<T>(body, _json)
+                   ?? throw new Exception("Üres válasz.");
+        }
+
 
         public async Task<LoginResult?> LoginAsync(string username, string password)
         {
@@ -60,12 +77,35 @@ namespace VizsgaRemekWpf.Services
             };
         }
 
-        public async Task<List<RestaurantModel>> GetRestaurantsAsync()
+        public Task<List<RestaurantModel>> GetRestaurantsAsync()
+        => GetAsync<List<RestaurantModel>>($"{BaseUrl}/restaurant/allRestaurant");
+
+
+        //MessageBox.Show("AUTH HEADER:");
+        
+   
+
+        public Task<List<OrderModel>> GetOrdersAsync()
+         => GetAsync<List<OrderModel>>($"{BaseUrl}/orders");
+
+        public Task<List<UserModel>> GetUsersAsync()
+            => GetAsync<List<UserModel>>($"{BaseUrl}/admin/users");
+
+        public Task<List<ReviewDisplayModel>> GetAdminReviewsAsync()
+            => GetAsync<List<ReviewDisplayModel>>($"{BaseUrl}/admin/reviews");
+
+        public Task<List<FoodModel>> GetFoodsAsync()
+            => GetAsync<List<FoodModel>>($"{BaseUrl}/foods");
+
+        /*public async Task<List<RestaurantModel>> GetRestaurantsAsync()
         {
             var r = await _http.GetAsync($"{BaseUrl}/restaurant/allRestaurant");
             r.EnsureSuccessStatusCode();
             return await r.Content.ReadFromJsonAsync<List<RestaurantModel>>(_json) ?? new();
         }
+
+
+
 
         public async Task<List<OrderModel>> GetOrdersAsync()
         {
@@ -93,6 +133,6 @@ namespace VizsgaRemekWpf.Services
             var r = await _http.GetAsync($"{BaseUrl}/admin/reviews");
             r.EnsureSuccessStatusCode();
             return await r.Content.ReadFromJsonAsync<List<ReviewDisplayModel>>(_json) ?? new();
-        }
+        }*/
     }
 }

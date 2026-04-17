@@ -66,15 +66,29 @@ namespace VizsgaRemekWpf.ViewModels
             SelectedTab = Tabs.First();
 
             LogoutCommand = new RelayCommand(_ => Logout());
-            RefreshCommand = new RelayCommand(_ => LoadAllData());
+            RefreshCommand = new RelayCommand(_ => LoadAllDataAsync());
             SelectTabCommand = new RelayCommand(tab => { if (tab != null) SelectedTab = tab; });
         }
 
-        private void OnLoginSuccess(string token, string username)
+        private async void OnLoginSuccess(string token, string username)
         {
+            _api.SetToken(token);
             AdminUsername = username;
-            IsLoggedIn = true;
-            LoadAllData();
+
+            var loaded = await LoadAllDataAsync();
+
+            if (loaded)
+            {
+                IsLoggedIn = true;
+                LoginVM.ErrorMessage = "";
+            }
+            else
+            {
+                _api.SetToken("");
+                AdminUsername = "";
+                IsLoggedIn = false;
+                LoginVM.ErrorMessage = "❌ Sikeres login után a védett adatok betöltése 401 hibával leállt.";
+            }
         }
 
         private void Logout()
@@ -87,7 +101,7 @@ namespace VizsgaRemekWpf.ViewModels
             SelectedTab = Tabs.First();
         }
 
-        private async void LoadAllData()
+        private async Task<bool> LoadAllDataAsync()
         {
             IsRefreshing = true;
             try
@@ -100,11 +114,12 @@ namespace VizsgaRemekWpf.ViewModels
 
                 _overviewVm.Load(restaurants, orders, users, foods);
                 _restaurantsVm.Load(restaurants);
-                _ordersVm.Load(orders);
+                _ordersVm.Load(orders, users);
                 _usersVm.Load(users);
                 _reviewsVm.Load(reviews);
 
                 LastUpdated = $"Frissítve: {DateTime.Now:HH:mm:ss}";
+                return true;
             }
             catch (Exception ex)
             {
@@ -113,6 +128,8 @@ namespace VizsgaRemekWpf.ViewModels
                     "Hiba",
                     System.Windows.MessageBoxButton.OK,
                     System.Windows.MessageBoxImage.Error);
+
+                return false;
             }
             finally
             {

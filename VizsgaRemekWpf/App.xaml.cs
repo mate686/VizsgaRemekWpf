@@ -17,7 +17,7 @@ namespace VizsgaRemekWpf
             
             var services = new ServiceCollection();
 
-         
+            
             services.AddSingleton<ApiService>();
             services.AddSingleton<IViewModelFactory, ViewModelFactory>();
 

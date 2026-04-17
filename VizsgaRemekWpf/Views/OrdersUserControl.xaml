@@ -47,7 +47,7 @@
                               CellStyle="{StaticResource DgCell}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding PublicId}" Width="*"/>
-                            <DataGridTextColumn Header="FELHASZNÁLÓ" Binding="{Binding UserId}" Width="*"/>
+                            <DataGridTextColumn Header="FELHASZNÁLÓ" Binding="{Binding UserName}" Width="*"/>
                             <DataGridTextColumn Header="ÖSSZEG" Binding="{Binding TotalPrice, StringFormat={}{0:N0} Ft}" Width="120"/>
                             <DataGridTextColumn Header="STÁTUSZ" Binding="{Binding Status}" Width="110"/>
                             <DataGridTextColumn Header="DÁTUM" Binding="{Binding OrderDate, StringFormat={}{0:yyyy.MM.dd}}" Width="110"/>
