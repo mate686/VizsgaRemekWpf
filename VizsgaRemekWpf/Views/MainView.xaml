@@ -4,7 +4,10 @@
         xmlns:vm="clr-namespace:VizsgaRemekWpf.ViewModels"
         xmlns:views="clr-namespace:VizsgaRemekWpf.Views"
         xmlns:conv="clr-namespace:VizsgaRemekWpf.Converters"
-        Title="VizsgaRemek Admin" Height="750" Width="1200"
+        x:Name="RootWindow"
+        Title="VizsgaRemek Admin"
+        Height="750"
+        Width="1200"
         WindowStartupLocation="CenterScreen"
         Background="#0F0F14"
         FontFamily="Segoe UI">
@@ -13,7 +16,6 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <conv:IsSelectedTabConverter x:Key="IsSelectedTab"/>
 
-        
         <DataTemplate DataType="{x:Type vm:OverviewViewModel}">
             <views:OverViewUserControl/>
         </DataTemplate>
@@ -40,8 +42,10 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="bd" Background="Transparent"
-                                CornerRadius="8" Padding="{TemplateBinding Padding}">
+                        <Border x:Name="bd"
+                                Background="Transparent"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
                             <ContentPresenter VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -61,13 +65,13 @@
     </Window.Resources>
 
     <Grid>
-
+        <!-- LOGIN -->
         <views:LoginUserControl DataContext="{Binding LoginVM}">
             <views:LoginUserControl.Style>
                 <Style TargetType="views:LoginUserControl">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoggedIn}" Value="True">
+                        <DataTrigger Binding="{Binding DataContext.IsLoggedIn, ElementName=RootWindow}" Value="True">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -75,25 +79,28 @@
             </views:LoginUserControl.Style>
         </views:LoginUserControl>
 
+        <!-- FŐ FELÜLET -->
         <Grid>
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoggedIn}" Value="True">
+                        <DataTrigger Binding="{Binding DataContext.IsLoggedIn, ElementName=RootWindow}" Value="True">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="220"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-           
-            <Border Grid.Column="0" Background="#13131C"
-                    BorderBrush="#2A2A3A" BorderThickness="0,0,1,0">
+            <Border Grid.Column="0"
+                    Background="#13131C"
+                    BorderBrush="#2A2A3A"
+                    BorderThickness="0,0,1,0">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top" Margin="20,24,20,28">
                         <StackPanel Orientation="Horizontal">
@@ -104,23 +111,26 @@
                                         <GradientStop Color="#FFB627" Offset="1"/>
                                     </LinearGradientBrush>
                                 </Border.Background>
-                                <TextBlock Text="🍽" FontSize="18"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="🍽" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
+
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="VizsgaRemek" FontSize="14"
-                                           FontWeight="Bold" Foreground="#F0EDE8"/>
+                                <TextBlock Text="VizsgaRemek" FontSize="14" FontWeight="Bold" Foreground="#F0EDE8"/>
                                 <TextBlock Text="Admin Panel" FontSize="10" Foreground="#6B6B80"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
 
-                    <Button DockPanel.Dock="Bottom" Command="{Binding LogoutCommand}"
-                            Margin="8,4,8,16" Cursor="Hand">
+                    <Button DockPanel.Dock="Bottom"
+                            Command="{Binding LogoutCommand}"
+                            Margin="8,4,8,16"
+                            Cursor="Hand">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border x:Name="b" Background="Transparent"
-                                        CornerRadius="8" Padding="16,12">
+                                <Border x:Name="b"
+                                        Background="Transparent"
+                                        CornerRadius="8"
+                                        Padding="16,12">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="🚪" FontSize="14" Margin="0,0,10,0"/>
                                         <TextBlock Text="Kijelentkezés" Foreground="#6B6B80" FontSize="13"/>
@@ -135,29 +145,31 @@
                         </Button.Template>
                     </Button>
 
-                    <Border DockPanel.Dock="Bottom" Margin="12,0,12,4"
-                            Background="#1A1A24" CornerRadius="10" Padding="12">
+                    <Border DockPanel.Dock="Bottom"
+                            Margin="12,0,12,4"
+                            Background="#1A1A24"
+                            CornerRadius="10"
+                            Padding="12">
                         <StackPanel Orientation="Horizontal">
-                            <Border Width="36" Height="36" CornerRadius="18"
-                                    Background="#FF6B3530" Margin="0,0,10,0">
-                                <TextBlock Text="👤" FontSize="16"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Border Width="36" Height="36" CornerRadius="18" Background="#FF6B3530" Margin="0,0,10,0">
+                                <TextBlock Text="👤" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
+
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="{Binding AdminUsername}" FontSize="13"
-                                           FontWeight="SemiBold" Foreground="#F0EDE8"/>
+                                <TextBlock Text="{Binding AdminUsername}" FontSize="13" FontWeight="SemiBold" Foreground="#F0EDE8"/>
                                 <TextBlock Text="Administrator" FontSize="11" Foreground="#FF6B35"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
 
                     <StackPanel Margin="12,0">
-                        <TextBlock Text="NAVIGÁCIÓ" FontSize="10" Foreground="#3A3A50"
-                                   FontWeight="SemiBold" Margin="8,0,0,10"/>
+                        <TextBlock Text="NAVIGÁCIÓ"
+                                   FontSize="10"
+                                   Foreground="#3A3A50"
+                                   FontWeight="SemiBold"
+                                   Margin="8,0,0,10"/>
 
-                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav"
-                                     Command="{Binding SelectTabCommand}"
-                                     CommandParameter="{Binding Tabs[0]}">
+                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav" Command="{Binding SelectTabCommand}" CommandParameter="{Binding Tabs[0]}">
                             <RadioButton.IsChecked>
                                 <MultiBinding Converter="{StaticResource IsSelectedTab}" Mode="OneWay">
                                     <Binding Path="Tabs[0]"/>
@@ -170,10 +182,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav"
-                                     Margin="0,2,0,0"
-                                     Command="{Binding SelectTabCommand}"
-                                     CommandParameter="{Binding Tabs[1]}">
+                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav" Margin="0,2,0,0" Command="{Binding SelectTabCommand}" CommandParameter="{Binding Tabs[1]}">
                             <RadioButton.IsChecked>
                                 <MultiBinding Converter="{StaticResource IsSelectedTab}" Mode="OneWay">
                                     <Binding Path="Tabs[1]"/>
@@ -186,10 +195,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav"
-                                     Margin="0,2,0,0"
-                                     Command="{Binding SelectTabCommand}"
-                                     CommandParameter="{Binding Tabs[2]}">
+                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav" Margin="0,2,0,0" Command="{Binding SelectTabCommand}" CommandParameter="{Binding Tabs[2]}">
                             <RadioButton.IsChecked>
                                 <MultiBinding Converter="{StaticResource IsSelectedTab}" Mode="OneWay">
                                     <Binding Path="Tabs[2]"/>
@@ -202,10 +208,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav"
-                                     Margin="0,2,0,0"
-                                     Command="{Binding SelectTabCommand}"
-                                     CommandParameter="{Binding Tabs[3]}">
+                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav" Margin="0,2,0,0" Command="{Binding SelectTabCommand}" CommandParameter="{Binding Tabs[3]}">
                             <RadioButton.IsChecked>
                                 <MultiBinding Converter="{StaticResource IsSelectedTab}" Mode="OneWay">
                                     <Binding Path="Tabs[3]"/>
@@ -218,10 +221,7 @@
                             </StackPanel>
                         </RadioButton>
 
-                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav"
-                                     Margin="0,2,0,0"
-                                     Command="{Binding SelectTabCommand}"
-                                     CommandParameter="{Binding Tabs[4]}">
+                        <RadioButton Style="{StaticResource NavBtn}" GroupName="Nav" Margin="0,2,0,0" Command="{Binding SelectTabCommand}" CommandParameter="{Binding Tabs[4]}">
                             <RadioButton.IsChecked>
                                 <MultiBinding Converter="{StaticResource IsSelectedTab}" Mode="OneWay">
                                     <Binding Path="Tabs[4]"/>
@@ -238,19 +238,37 @@
             </Border>
 
             <Grid Grid.Column="1">
-                <Border VerticalAlignment="Top" Height="60" Background="#13131C"
-                        BorderBrush="#2A2A3A" BorderThickness="0,0,0,1" Panel.ZIndex="10">
+                <Border VerticalAlignment="Top"
+                        Height="60"
+                        Background="#13131C"
+                        BorderBrush="#2A2A3A"
+                        BorderThickness="0,0,0,1"
+                        Panel.ZIndex="10">
                     <DockPanel Margin="24,0">
-                        <TextBlock Text="{Binding SelectedTab.Title}" FontSize="19"
-                                   FontWeight="Bold" Foreground="#F0EDE8" VerticalAlignment="Center"/>
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding LastUpdated}" Foreground="#6B6B80"
-                                       FontSize="12" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                        <TextBlock Text="{Binding SelectedTab.Title}"
+                                   FontSize="19"
+                                   FontWeight="Bold"
+                                   Foreground="#F0EDE8"
+                                   VerticalAlignment="Center"/>
+
+                        <StackPanel DockPanel.Dock="Right"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="{Binding LastUpdated}"
+                                       Foreground="#6B6B80"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,16,0"/>
+
                             <Button Command="{Binding RefreshCommand}" Cursor="Hand">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border x:Name="b" Background="#1A1A24" CornerRadius="8"
-                                                BorderBrush="#2A2A3A" BorderThickness="1" Padding="14,8">
+                                        <Border x:Name="b"
+                                                Background="#1A1A24"
+                                                CornerRadius="8"
+                                                BorderBrush="#2A2A3A"
+                                                BorderThickness="1"
+                                                Padding="14,8">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="🔄" Margin="0,0,6,0"/>
                                                 <TextBlock Text="Frissítés" Foreground="#F0EDE8" FontSize="13"/>
@@ -268,17 +286,18 @@
                     </DockPanel>
                 </Border>
 
-                <Border Background="#CC000000" Panel.ZIndex="20"
+                <Border Background="#CC000000"
+                        Panel.ZIndex="20"
                         Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVis}}">
-                    <TextBlock Text="⏳ Betöltés..." Foreground="#F0EDE8" FontSize="18"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="⏳ Betöltés..."
+                               Foreground="#F0EDE8"
+                               FontSize="18"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
                 </Border>
 
-           
                 <ContentControl Content="{Binding SelectedTab}" Margin="0,60,0,0"/>
             </Grid>
         </Grid>
     </Grid>
-
 </Window>
-
