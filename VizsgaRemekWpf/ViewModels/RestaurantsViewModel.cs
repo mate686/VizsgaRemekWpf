@@ -33,6 +33,30 @@ namespace VizsgaRemekWpf.ViewModels
             new Axis { LabelsPaint = new SolidColorPaint(SKColor.Parse("#6B6B80")) }
         };
 
+        public void Load(List<RestaurantModel> restaurants, AdminStatsModel stats)
+        {
+            Restaurants = new ObservableCollection<RestaurantModel>(restaurants);
+
+            var top5 = stats.RestaurantOrderCounts.Take(5).ToList();
+
+            OrderCountSeries = new ISeries[]
+            {
+            new ColumnSeries<double>
+            {
+                Values = top5.Select(x => (double)x.OrderCount).ToArray(),
+                Name = "Rendelések száma"
+            }
+            };
+
+            RestaurantXAxes = new[]
+            {
+            new Axis
+            {
+                Labels = top5.Select(x => x.RestaurantName).ToArray()
+            }
+        };
+            }
+
         public void Load(List<RestaurantModel> restaurants)
         {
             Restaurants = new ObservableCollection<RestaurantModel>(restaurants);

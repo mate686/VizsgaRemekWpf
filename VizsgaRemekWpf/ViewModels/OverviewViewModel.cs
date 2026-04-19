@@ -51,69 +51,80 @@ namespace VizsgaRemekWpf.ViewModels
             new Axis { LabelsPaint = new SolidColorPaint(SKColor.Parse("#6B6B80")) }
         };
 
-        
 
-        public void Load(
-            List<RestaurantModel> restaurants,
-            List<OrderModel> orders,
-            List<UserModel> users,
-            List<FoodModel> foods)
+
+        public void Load(AdminStatsModel stats, List<FoodModel> foods)
         {
-            RestaurantCount = restaurants.Count;
-            OrderCount = orders.Count;
-            UserCount = users.Count;
+            RestaurantCount = stats.RestaurantCount;
+            OrderCount = stats.OrderCount;
+            UserCount = stats.UserCount;
+            TotalRevenue = stats.TotalRevenue.ToString("N0") + " Ft";
 
-            var revenue = orders.Where(o => o.Status == "Paid").Sum(o => o.TotalPrice);
-            TotalRevenue = revenue.ToString("N0") + " Ft";
-
-            BuildOrderStatusPie(orders);
-            BuildRestaurantRevenueChart(restaurants);
+            BuildOrderStatusPie(stats);
+            BuildRestaurantRevenueChart(stats);
             BuildFoodCategoryChart(foods);
         }
 
-        private void BuildOrderStatusPie(List<OrderModel> orders)
+        private void BuildOrderStatusPie(AdminStatsModel stats)
         {
             var colors = new[]
             {
-                SKColor.Parse("#FF6B35"), SKColor.Parse("#FFB627"),
-                SKColor.Parse("#4ECDC4"), SKColor.Parse("#A8FF78")
-            };
+        SKColor.Parse("#FF6B35"),
+        SKColor.Parse("#FFB627"),
+        SKColor.Parse("#4ECDC4")
+    };
 
-            OrderStatusSeries = orders
-                .GroupBy(o => o.Status)
-                .Select((g, i) => new PieSeries<double>
-                {
-                    Values = new[] { (double)g.Count() },
-                    Name = g.Key,
-                    Fill = new SolidColorPaint(colors[i % colors.Length]),
-                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                    DataLabelsSize = 12,
-                })
-                .Cast<ISeries>().ToList();
+            OrderStatusSeries = new ISeries[]
+            {
+        new PieSeries<double>
+        {
+            Values = new[] { (double)stats.PaidOrders },
+            Name = "Paid",
+            Fill = new SolidColorPaint(colors[0]),
+            DataLabelsPaint = new SolidColorPaint(SKColors.White),
+            DataLabelsSize = 12
+        },
+        new PieSeries<double>
+        {
+            Values = new[] { (double)stats.PendingOrders },
+            Name = "Pending",
+            Fill = new SolidColorPaint(colors[1]),
+            DataLabelsPaint = new SolidColorPaint(SKColors.White),
+            DataLabelsSize = 12
+        },
+        new PieSeries<double>
+        {
+            Values = new[] { (double)stats.CompletedOrders },
+            Name = "Completed",
+            Fill = new SolidColorPaint(colors[2]),
+            DataLabelsPaint = new SolidColorPaint(SKColors.White),
+            DataLabelsSize = 12
+        }
+            };
         }
 
-        private void BuildRestaurantRevenueChart(List<RestaurantModel> restaurants)
+        private void BuildRestaurantRevenueChart(AdminStatsModel stats)
         {
-            var top5 = restaurants.Take(5).ToList();
-            var rng = new Random(42);
+            var top5 = stats.RestaurantRevenue.Take(5).ToList();
 
             RestaurantRevenueSeries = new ISeries[]
             {
-                new ColumnSeries<double>
-                {
-                    Values = top5.Select(_ => (double)rng.Next(50000, 500000)).ToArray(),
-                    Fill = new LinearGradientPaint(SKColor.Parse("#FF6B35"), SKColor.Parse("#FFB627")),
-                    Name = "Bevétel (Ft)"
-                }
+        new ColumnSeries<double>
+        {
+            Values = top5.Select(x => (double)x.Revenue).ToArray(),
+            Fill = new LinearGradientPaint(SKColor.Parse("#FF6B35"), SKColor.Parse("#FFB627")),
+            Name = "Bevétel (Ft)"
+        }
             };
+
             RestaurantRevenueXAxes = new[]
             {
-                new Axis
-                {
-                    Labels = top5.Select(r => r.Name).ToArray(),
-                    LabelsPaint = new SolidColorPaint(SKColor.Parse("#6B6B80"))
-                }
-            };
+        new Axis
+        {
+            Labels = top5.Select(x => x.RestaurantName).ToArray(),
+            LabelsPaint = new SolidColorPaint(SKColor.Parse("#6B6B80"))
+        }
+    };
         }
 
         private void BuildFoodCategoryChart(List<FoodModel> foods)

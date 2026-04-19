@@ -33,6 +33,13 @@ namespace VizsgaRemekWpf.Services
                     : new AuthenticationHeaderValue("Bearer", token);
         }
 
+        public async Task<AdminStatsModel> GetAdminStatsAsync()
+        {
+            var r = await _http.GetAsync($"{BaseUrl}/admin/stats");
+            r.EnsureSuccessStatusCode();
+            return await r.Content.ReadFromJsonAsync<AdminStatsModel>(_json) ?? new AdminStatsModel();
+        }
+
         private async Task<T> GetAsync<T>(string url)
         {
             /*System.Windows.MessageBox.Show(
@@ -48,6 +55,7 @@ namespace VizsgaRemekWpf.Services
                    ?? throw new Exception("Üres válasz.");
         }
 
+        
 
         public async Task<LoginResult?> LoginAsync(string username, string password)
         {

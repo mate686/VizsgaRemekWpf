@@ -111,9 +111,10 @@ namespace VizsgaRemekWpf.ViewModels
                 var users = await _api.GetUsersAsync();
                 var reviews = await _api.GetAdminReviewsAsync();
                 var foods = await _api.GetFoodsAsync();
+                var stats = await _api.GetAdminStatsAsync();
 
-                _overviewVm.Load(restaurants, orders, users, foods);
-                _restaurantsVm.Load(restaurants);
+                _overviewVm.Load(stats, foods);
+                _restaurantsVm.Load(restaurants, stats);
                 _ordersVm.Load(orders, users);
                 _usersVm.Load(users);
                 _reviewsVm.Load(reviews);
