@@ -64,6 +64,19 @@
                         </StackPanel>
                     </StackPanel>
 
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,18">
+                        <TextBlock Text="💳" FontSize="20" Margin="0,0,12,0"/>
+                        <StackPanel>
+                            <TextBlock Text="Kifizetett rendelések"
+                                       FontSize="12"
+                                       Foreground="#6B6B80"/>
+                            <TextBlock Text="{Binding PaidOrders}"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       Foreground="#FF6B35"/>
+                        </StackPanel>
+                    </StackPanel>
+
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="⏳" FontSize="20" Margin="0,0,12,0"/>
                         <StackPanel>

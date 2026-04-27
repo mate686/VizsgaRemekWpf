@@ -34,6 +34,13 @@ namespace VizsgaRemekWpf.ViewModels
             set => Set(ref _successfulOrders, value);
         }
 
+        private string _paidOrders = "0";
+        public string PaidOrders
+        {
+            get => _paidOrders;
+            set => Set(ref _paidOrders, value);
+        }
+
         private string _pendingOrders = "0";
         public string PendingOrders
         {
@@ -57,46 +64,74 @@ namespace VizsgaRemekWpf.ViewModels
                 order.UserName = user?.Name;
 
                 if (string.IsNullOrWhiteSpace(order.UserName))
+                {
                     order.UserName = user?.UserName ?? order.UserId;
+                }
             }
 
             Orders = new ObservableCollection<OrderModel>(orders);
 
-            var successfulStatuses = new[] { "paid", "completed" };
+            string NormalizeStatus(string? status)
+            {
+                return (status ?? "").Trim().ToLower();
+            }
+
+            var paidCount = orders.Count(o =>
+                NormalizeStatus(o.Status) == "paid");
+
+            var completedCount = orders.Count(o =>
+                NormalizeStatus(o.Status) == "completed");
+
+            var pendingCount = orders.Count(o =>
+                NormalizeStatus(o.Status) == "pending");
+
+            var successfulCount = orders.Count(o =>
+                NormalizeStatus(o.Status) == "paid" ||
+                NormalizeStatus(o.Status) == "completed");
 
             var revenue = orders
-                .Where(o => successfulStatuses.Contains((o.Status ?? "").ToLower()))
+                .Where(o =>
+                    NormalizeStatus(o.Status) == "paid" ||
+                    NormalizeStatus(o.Status) == "completed")
                 .Sum(o => o.TotalPrice);
 
             TotalRevenue = revenue.ToString("N0") + " Ft";
 
-            SuccessfulOrders = orders.Count(o =>
-                successfulStatuses.Contains((o.Status ?? "").ToLower())).ToString();
+            SuccessfulOrders = successfulCount.ToString();
 
-            PendingOrders = orders.Count(o =>
-                (o.Status ?? "").ToLower() == "pending").ToString();
+            PaidOrders = paidCount.ToString();
 
-            var colors = new[]
+            PendingOrders = pendingCount.ToString();
+
+            StatusSeries = new List<ISeries>
             {
-                SKColor.Parse("#FF6B35"),
-                SKColor.Parse("#4ECDC4"),
-                SKColor.Parse("#FFB627"),
-                SKColor.Parse("#A8FF78"),
-                SKColor.Parse("#C77DFF")
-            };
-
-            StatusSeries = orders
-                .GroupBy(o => (o.Status ?? "").ToLower())
-                .Select((g, i) => new PieSeries<double>
+                new PieSeries<double>
                 {
-                    Values = new[] { (double)g.Count() },
-                    Name = g.Key,
-                    Fill = new SolidColorPaint(colors[i % colors.Length]),
+                    Values = new[] { (double)pendingCount },
+                    Name = "Pending",
+                    Fill = new SolidColorPaint(SKColor.Parse("#FFB627")),
                     DataLabelsPaint = new SolidColorPaint(SKColors.White),
                     DataLabelsSize = 12
-                })
-                .Cast<ISeries>()
-                .ToList();
+                },
+
+                new PieSeries<double>
+                {
+                    Values = new[] { (double)paidCount },
+                    Name = "Paid",
+                    Fill = new SolidColorPaint(SKColor.Parse("#FF6B35")),
+                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                    DataLabelsSize = 12
+                },
+
+                new PieSeries<double>
+                {
+                    Values = new[] { (double)completedCount },
+                    Name = "Completed",
+                    Fill = new SolidColorPaint(SKColor.Parse("#4ECDC4")),
+                    DataLabelsPaint = new SolidColorPaint(SKColors.White),
+                    DataLabelsSize = 12
+                }
+            };
         }
     }
 }

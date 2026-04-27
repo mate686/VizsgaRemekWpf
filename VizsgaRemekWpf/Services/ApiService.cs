@@ -42,8 +42,7 @@ namespace VizsgaRemekWpf.Services
 
         private async Task<T> GetAsync<T>(string url)
         {
-            /*System.Windows.MessageBox.Show(
-                _http.DefaultRequestHeaders.Authorization?.ToString() ?? "NINCS AUTH HEADER");*/
+            
 
             var response = await _http.GetAsync(url);
             var body = await response.Content.ReadAsStringAsync();
@@ -89,12 +88,12 @@ namespace VizsgaRemekWpf.Services
         => GetAsync<List<RestaurantModel>>($"{BaseUrl}/restaurant/allRestaurant");
 
 
-        //MessageBox.Show("AUTH HEADER:");
+        
         
    
 
         public Task<List<OrderModel>> GetOrdersAsync()
-         => GetAsync<List<OrderModel>>($"{BaseUrl}/orders");
+         => GetAsync<List<OrderModel>>($"{BaseUrl}/orders/allAdmin");
 
         public Task<List<UserModel>> GetUsersAsync()
             => GetAsync<List<UserModel>>($"{BaseUrl}/admin/users");
@@ -105,42 +104,5 @@ namespace VizsgaRemekWpf.Services
         public Task<List<FoodModel>> GetFoodsAsync()
             => GetAsync<List<FoodModel>>($"{BaseUrl}/foods");
 
-        /*public async Task<List<RestaurantModel>> GetRestaurantsAsync()
-        {
-            var r = await _http.GetAsync($"{BaseUrl}/restaurant/allRestaurant");
-            r.EnsureSuccessStatusCode();
-            return await r.Content.ReadFromJsonAsync<List<RestaurantModel>>(_json) ?? new();
-        }
-
-
-
-
-        public async Task<List<OrderModel>> GetOrdersAsync()
-        {
-            var r = await _http.GetAsync($"{BaseUrl}/orders");
-            r.EnsureSuccessStatusCode();
-            return await r.Content.ReadFromJsonAsync<List<OrderModel>>(_json) ?? new();
-        }
-
-        public async Task<List<FoodModel>> GetFoodsAsync()
-        {
-            var r = await _http.GetAsync($"{BaseUrl}/foods");
-            r.EnsureSuccessStatusCode();
-            return await r.Content.ReadFromJsonAsync<List<FoodModel>>(_json) ?? new();
-        }
-
-        public async Task<List<UserModel>> GetUsersAsync()
-        {
-            var r = await _http.GetAsync($"{BaseUrl}/admin/users");
-            r.EnsureSuccessStatusCode();
-            return await r.Content.ReadFromJsonAsync<List<UserModel>>(_json) ?? new();
-        }
-
-        public async Task<List<ReviewDisplayModel>> GetAdminReviewsAsync()
-        {
-            var r = await _http.GetAsync($"{BaseUrl}/admin/reviews");
-            r.EnsureSuccessStatusCode();
-            return await r.Content.ReadFromJsonAsync<List<ReviewDisplayModel>>(_json) ?? new();
-        }*/
     }
 }
